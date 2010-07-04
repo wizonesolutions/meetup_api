@@ -1,0 +1,292 @@
+2009-09-05 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* jsonrpcs.inc, jsonrpcs.inc: use __METHOD__ constant for error messages
+	instead of hardcoded values
+
+	* jsonrpcs.inc: catch exceptions thrown during execution of invoked methods;
+	check for $_SERVER having been disabled via php.ini and log an error if so
+
+	* updated Makefiles (sync with base lib)
+
+	* tagged and release as 0.5
+
+2009-08-04 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* xmlrpc/testuite, jsonrpc/testsuite: work when short_open_atgs is on in php.ini
+
+	* jsonrpc/testsuite: work when native json extension is disabled
+
+2009-08-02 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* jsonrpc.inc: fix bad encoding if same object is encoded twice using
+	php_jsonrpc_encode; removed some by-ref assignments and declarations
+
+	* json_extension_api.php: added json_last_error() function and the constants
+	defined in php 5.3.0
+
+	* json_extension_api.php, xmlrpc_extension_api: work around a php bug to
+	determine if native extensions are loaded
+
+	* jsonrpcs.inc: allow 'mixed type' servers (merge from phpxmlrpc 3.0)
+
+	* jsonrpc/testuite: better discrimination of errors
+
+	* xmlrpc/testuite: fix page title
+
+2009-07-26 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* server.php, jsonrpcs.php: remove usage of ereg*() to avoid warnings with php5
+
+	* jsonrpc.inc: 1st try at keeping type info for params of incoming calls,
+	so that 'phpvals' type servers can still validate them
+
+2009-07-17 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* xmlrpc_extension_api.inc: fix warnings with php 5.3
+
+2009-07-02 - G. Giunta (giunta.gaetano@gmail.com) thanks Heiko Stuebner
+
+	* fix a missing 'new' call when building string vals in php_jsonrpc_encode
+
+2009-06-23 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* replace all usage of '= & new' with '= new', as this is deprecated in php 5
+	and has been shown to cause problems too
+
+2008-04-05 - G. Giunta (giunta.gaetano@gmail.com)
+
+	* jsonrpc.inc: fix encoding of UTF8 chars outside of the BMP
+
+2008-03-07 Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* improve makefile for windows xp
+
+	* update copyrights for 2008
+
+2007-09-05 Gaetano Giunta <giunta.gaetano@gmail.com> thanks kpetersen
+
+	* fix encoding of / chars in jsonrpc when source is in UTF8
+
+2007-03-09  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added link to license (online version) in all copyrighted files
+
+2007-02-25  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* doc/makefile: added command to invoke xxe to generate docs; added
+	missing file in ajaxmlrpc dir
+
+	* better rendering of docs in xml+css format for function prototypes
+ 
+	* json_extension_api.inc: allow user to switch between new and old behaviour
+	when decoding single scalar values
+
+	* taggend and released as version 0.4
+
+2007-02-22  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* docxmlrpcs.inc: fix form posting for case of magic_quotes_gpc being set
+
+	* jsonrpc.inc: fix serialization of requests, responses that have a string,
+	null or a boolean as id
+
+2007-02-20  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* xmlrpc_extension_api.inc: fix xmlrpc_decode_request(), xmlrpc_decode()
+	when decoding a serialized response; added one more case to testsuite
+	and reformatted in tabular layout
+
+2007-02-20  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json_extension_api.inc: emulate new behaviour of json_decode, from php
+	5.2.1 onwards
+
+	* added Makefile in docs dir and fixes to top-level Makefile
+
+2007-02-15  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json\jsonxmlrpc.inc: make sure that jsonpcvals built as int/double
+	never serialize() as invalid json, ie. add type cast on serialization;
+	change function jsornpc_decode_json to decode correctly the
+	serialized representation of responses and method calls
+
+	* json\jsonxmlrpc.inc, jsonrpcs.inc: add charset declaration in http
+	headers when not using ASCII; fix decoding of json when there is
+	utf8-iso88591 or iso88591-utf8 transcoding involved; switched
+	content-type from text/plain to application/json
+
+2007-02-04  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* ajax\ajaxmlrpc.inc: added support for jsxmlrpc instead of jsolait
+
+	* ajax\, makefile: added new demo file for usage with jsxmlrpc
+
+	* json\jsonxmlrpc.inc: fix error msg while decoding response
+
+2007-02-02  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json\jsonxmlrpc.inc: speed up a bit encoding of UTF8 data from user
+
+2007-01-22  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* docxmlrpcs.inc: add support for visual editor of xmlrpc params
+
+2006-12-12  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: correctly quote jsonrpcval of type datetime
+
+2006-11-22  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* tag and release as 0.3
+
+2006-11-13  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json\testsuite.php: fix for php 5.2 and php installs where other libs
+	are missing
+
+2006-11-06  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json\testsuite.php: added a third set of tests, for testing json encoding;
+	added zend_json for comparison purposes
+
+	* json\benchmark.php: added zend_json for comparison purposes
+
+	* jsonrpc.inc: fix encoding of php objects
+
+2006-11-05  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* json\testsuite.php: added a second set of tests, for parsing json strings;
+	changed display mode to easier tabular format
+
+	* jsonrpc.inc: move detection of empty strings inside json_parse() to
+	avoid emitting php warnings; parse \xCC char escape sequences when
+	emitting data in UTF-8; parse 0xNNN integer number notation
+
+2006-10-21  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: parsing fixes: reject '1 2' as integer, reject line
+	terminators inside strings
+
+	* jsonrpc: add PEAR Services_json class to benchmark as baseline pure-php
+	implementation
+
+2006-10-14  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: replaced all eregs with pregs; json parsing now accepts
+	empty comments
+
+2006-09-17  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: fix bug in serializing empty objects and arrays; better
+	error msg in jsonrpc_decode_json if passed empty strings
+
+	* jsonrpc: added an emulation-layer to reimplement the same API as the
+	php native extension; added testsuite file to go with it
+
+2006-09-05  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: add to client capability to decode and print the debug info
+	sent by the server in std (php-jsonrpc/php-xmlrpc) format
+
+2006-09-04  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: one bugfix in serialize_jsonrpcval for jsonrpcvals that had
+	php_class set; code speedup (shuffling around switch() statements); fix for
+	receiving \uXXXX unicode chars; added new function php_jsonrpc_decode_json()
+
+	* jsonrpcs.inc: add support for new, 'epivals' calling convention
+
+	* json\benchmark.php: expand tests to decoding, http complete roundtrip, xdebug
+	support
+
+	* change in docxmlrpcs.inc to match service() syntax of base class
+
+2006-08-18  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added new module: xmlrpc_extension_api
+	This provides a bug-for-bug compatible implementation of the native
+	xmlrpc extension of PHP, for cases where it is not available
+
+2006-05-29  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added new module: adodb. Useful for building webservice-to-sql proxies
+
+2006-05-25  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: fix php_jsonrpc_encode() of null values
+
+	* add initial release of benchmark file for jsonrpc
+
+2006-05-14  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* docxmlrpcs.inc: added to docxmlrpc server the capability to generate docs
+	for every single parameter of the exposed methods
+
+2006-05-02  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* jsonrpc.inc: better detection of standard and non-standard errors in responses;
+	remember to always quote 'id', 'method' and 'params'
+
+2006-04-24  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added NEWS file and released as version 0.1
+
+2006-02-09  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added a new section, with a reverse (transparent) proxy server for xmlrpc calls
+
+	* added makefile, readme
+
+2006-02-05  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* ajaxmlrpc.inc: bugfixing, cleanup, api changes. Added a new function that
+	wraps a server dispatch map without need for a server object.
+
+	* added a new demo file for ajax + jsonrpc: sonofajax.php
+
+2006-02-04  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* ajaxmlrpc.inc: more javadoc and comments
+
+	* ajaxdemo.php: slightly more complex demo: show usage of an array param in the ws
+
+2006-02-02  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* added a new section, dedicated to ajax usage of the lib.
+	First implementation of a class that creates javascript to call exposed webservices
+	out of an xmlrpc_server object
+
+2006-01-30  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* docxmlrpcs.inc: moved the core function outside the documenting_xmlrpcserver
+	class. This allows to document existing servers by a simple function call,
+	without the need to change their class.
+
+	* removed ezxmlrpcs.inc, since its code has been merged in phpxmlrpc 2.0RC3
+
+	* jsonrpc.inc, jsonrpcs.inc: steady progress in implementation
+
+2005-12-18  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* ezxmlrpcs.inc: added a new subclass of xmlrpc_server: the main
+	goal is to use plain php functions in the dispatch map, and let the
+	server call them using native php types instead of xmlrpcmsg objs
+
+2005-12-09  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	* docxmlrpcs.inc: added a form to let user test xmlrpc methods directly
+	from their browsers; modified service() method accordingly to respond
+	to form-encoded data
+
+	* steady progress with wsdl description of xmlrpc services
+
+2005-12-01  Gaetano Giunta <giunta.gaetano@gmail.com>
+
+	Package creation:
+
+	this CVS repository is intended to host stuff that extends the core
+	functionality of the phpxmlrpc lib
+
+	* imported the partial jsonrpc implementation from the xmlrpc module
+	* imported the partial wsdl implementation from the xmlrpc module
+	* added a new subclass of xmlrpc server that generates html docs by itself

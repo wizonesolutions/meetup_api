@@ -18,6 +18,7 @@ require_once(dirname(__FILE__) . '/config.php');
  */
 class MeetupAPIBase {
   protected $validFormats = array('json',
+      'xml',
       );
   protected $apiKey, $apiUrl, $format, $method, $pageSize, $numPages, $sortDesc, $query, $curl; //This should be set to the Meetup API method implemented by the child class.
 
@@ -33,6 +34,10 @@ class MeetupAPIBase {
 
   function __autoload($className) {
     require_once(dirname(__FILE__) . $className . '.php');
+  }
+
+  function setFormat($format) {
+    if (in_array($format, $this->validFormats)) $this->format = $format;
   }
 
   function setQuery($query) {
@@ -67,8 +72,15 @@ class MeetupAPIBase {
   function parseResponse($responseData) {
     switch($this->format) {
       case 'json':
+        //TODO: This json_decode has a BIG limitation, but it is built into PHP and is thus preferred. However, I wouldn't mind offering a backup decoding function. Gotta save on that paging activity.
         $json_response = json_decode($responseData);
         return $json_response;
+        break;
+      case 'xml':
+        $xml_response_raw = simplexml_load_string($responseData);
+        //Here goes nothing
+        $xml_response = $this->parseXmlIntoObject($xml_response_raw);
+        return $xml_response;
         break;
       default:
         //We don't know how to execute this request, so return FALSE.
@@ -76,6 +88,61 @@ class MeetupAPIBase {
         return FALSE;
         break;
     }
+  }
+
+  /* @todo: Taking this XML at face value is a bad idea. It would be better to hard-map the tags and data hierarchy to expect, a bit like I do in Easy Populate Converter. Then I can traverse it without recursion and get around the hideous question of, "How do I tell if a child has children itself, and if those are part of a list of itself or simply child properties?" Granted, there are few child properties that actually themselves contain multiple results. In fact, I can only think of topics. So accomodating all children isn't really needed. I can abstract this a bit and make life easier. I can refactor it later.
+
+  THEREFORE, this XML parsing is probably not something that MeetupAPIBase should be doing at all. It doesn't have enough information about what to expect, and the whole point of this module is to present callers with nice, easy-to-use, CONSISTENT arrays of results, regardless of whether they were retrieved in JSON or XML.
+
+  A bit to consider.
+  */
+  protected function parseXmlIntoObject($xmlObj, $depth = 0) {
+    $xmlResult = new stdClass();
+    $valueCount = count($xmlObj);
+    if ($valueCount) {
+      foreach($xmlObj as $key => $value) {
+        if ($depth == 0 && $key == 'head') {
+          //This is just to make it match the JSON. Maybe I should change them both to something else though? @todo: Decide on that.
+          $useKey = 'meta';
+        }
+        elseif ($depth == 0 && $key == 'items') {
+          $useKey = 'results'; //again, make it match the JSON
+        }
+        else {
+          $useKey = $key;
+        }
+        $children = $value->children();
+        if (count($children)) {
+          foreach($children as $key2 => $value2) {
+            $useKey2 = $key2;
+            if (isset($children->{$useKey2}[1])) {
+              $arrayMode = TRUE;
+            }
+            if ($arrayMode) {
+              $xmlResult->{$useKey}[] = $this->parseXmlIntoObject($value2, $depth + 1);
+            }
+            else {
+              $xmlResult->{$useKey}->{$useKey2} = $this->parseXmlIntoObject($value2, $depth + 1);
+            }
+          }
+        }
+        else {
+          //No children, so use the value itself - put it straight into xmlResult if we're still on depth 0, otherwise return it
+          if ($depth == 0) {
+            $xmlResult->{$useKey} = $value;
+          }
+          else {
+            return (string) $value;
+          }
+        }
+        if ($depth > 0) return $xmlResult;
+      }
+    }
+    else {
+      if ($depth == 0) return FALSE;
+      else return (string) $xmlObj;
+    }
+    if ($depth == 0) return $xmlResult;
   }
 
   /**
@@ -160,5 +227,6 @@ $muApi->setQuery( array('zip' => '11211',
       'order' => 'ctime',) );
 $muApi->setPageSize(43);
 $muApi->setSortDesc(TRUE);
+$muApi->setFormat('xml');
 krumo($muApi->getResults());
 

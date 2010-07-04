@@ -1,0 +1,122 @@
+XML-RPC for PHP EXTRAS version 0.5 - 2009/09/05
+
+This is the first release of the library to only support PHP 5.
+The corresponding version of the base library is 3.0.0 beta
+
+Quite a few changes and bugfixes have been made in the are of json support:
+* improved: catch exceptions thrown during execution of php functions exposed as methods by the jsonrpc server
+* fixed: fix bad encoding if same object is encoded twice using php_jsonrpc_encode
+* improved: json_extension_api.php: added json_last_error() function and the constants defined in php 5.3.0
+* improved: allow 'mixed type' jsonrpc servers (see description in the xmlrpc server docs)
+* improved: allow 'phpvals' jsonrpc servers to do type checking on incoming requests
+* fixed: a missing 'new' call when building string vals in php_jsonrpc_encode
+* fixed: encoding of UTF8 chars outside of the BMP
+* fixed: encoding of '/' chars in jsonrpc when source is in UTF8
+
+XML-RPC for PHP EXTRAS version 0.4 - 2007/02/25
+
+The fourth release of the php-xmlrpc extras package brings minor new features
+and some bugfixes:
+
+* DOCXMLRPCS gets a bugfix for php installs where magic_quotes_gpc is set and an
+  option to take advantage of a visual editor for xmlrpc values (the editor being
+  part of the jsxmlrpc package, it has to be downloaded separately)
+
+* the usual lot of bugfixes for JSONRPC: slightly faster handling of data which
+  is internally encoded as UTF-8; support booleans, strings, null as valid id
+  in requests and responses; correctly add quotes when serializig datetimes;
+  correct handling of charset declaration in http headers; switched the declared
+  content-type from 'text/plain' to 'application/json' as per the proposed rfc;
+  modify json_extension_api.inc to follow php 445/521 semantics
+
+* added in AJAXMLRPC a new server class that takes advantage of ths jsxmlrpc lib
+  for the generated javascript code (instead of jsolait)
+
+* one bugfix in XMLRPC_EXTENSION_API
+
+
+XML-RPC for PHP EXTRAS version 0.3 - 2006/11/23
+
+The third release of the  php-xmlrpc extras package brings the usual lot of
+bugfixes and new capabilities:
+
+Lots of bugfixes in the json code, leading to improved serialization and parsing.
+
+A real manual. Still quite incomplete, but way better than naught.
+
+JSON_EXTENSION_API - building on the jsonrpc classes, this new file provides
+a drop-in replacement for the php native json extension. Applications that use
+the php json extension can include this file to run unaltered on php installs where
+the extension is missing
+
+
+XML-RPC for PHP EXTRAS version 0.2 - 2006/09/08
+
+I'm pleased to announce the second release of the php-xmlrpc extras package.
+
+Besides some bugfixing and improvements, two very interesting new packages have
+been added:
+
+XMLRPC_EXTENSION_API - a replacement for the php native xmlrpc extension, written
+in 100% pure php. Typical use case: enabling a php application written to make
+use of the php native xmlrpc extension to run also on webservers where the extension
+is not / can not be installed.
+
+ADODB - designed to provide a flexible and easy-to-use database-to-webservice
+conversion mechanism. Based on the adodb library by John Lim, it includes conversion
+functions, server component and meta-db-driver that allows transparent access to
+remote databases over http.
+
+Enhancements to existing packages include:
+
+JSONRPC: better handling of fault response; always quote request/response member
+names; fix php_jsonrpc_encode() of null values; fix serialize_jsonrpcval for
+jsonrpcvals that have php_class set; add benchmark test file; added new function
+php_jsonrpc_decode_json(); client properly decodes debug info sent by server;
+fix reception of encoded unicode characters
+
+DOCXMLRPCS: added capability to document single parameters of xmlrpc methods;
+changed server::service() method to match modified base library
+
+The php xmlrpc base library version 2.1 or later is needed for these package to
+run.
+
+
+XML-RPC for PHP EXTRAS version 0.1 - 2006/04/24
+
+I'm pleased to announce the initial release of the php-xmlrpc extras package.
+
+The documentation is quite scarce (read: nonexistent), but the code is in pretty good shape.
+
+Included packages are:
+
+WSDL:
+----------------------------------------
+The completely UNOFFICIAL DTD and RELAX NG schemas to validate your xmlrpc against.
+Might be useful in defining some wsdl file describing xmlrpc services (good luck!!!).
+The DTD is not quite accurate, due to limitations in the definition language.
+RELAX NG should be 100% precise and accurate.
+
+DOCXMLRPCS:
+----------------------------------------
+Subclass of xmlrpc server that self-generates HTML documentation of exposed services.
+Easy as a breeze to use, and extremely user-friendly.
+
+PROXY:
+----------------------------------------
+Subclass of xmlrpc server that can act as remote (transparent) xmlrpc proxy to forward calls to a remote server.
+Can either forward any received call or probe remote server first for existing methods.
+
+JSONRPC:
+----------------------------------------
+NEW!!!
+Support for this brand new trendy protocol, 100% buzzword-compliant and ajax-ready.
+Client and server classes provided.
+Makes it very easy to build a server that supports both protocols at the same time.
+Original JSON parsing code from Michal Migurski (whose lib is now officially part of PEAR).
+
+AJAX:
+-----------------------------------------
+Demo of ajaxified version of xmlrpc lib: supports executing xmlrpc/jsonrpc calls
+directly from the client browser.
+Needs the excellent jsolait lib from http://jsolait.net/ (thanks Jan Kollhof)

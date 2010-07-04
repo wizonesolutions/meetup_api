@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Usage</title><link rel="stylesheet" href="xmlrpc.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.74.3" /><link rel="home" href="index.html" title="EXTRAS packages for the PHP-XMLRPC library" /><link rel="up" href="ch05.html" title="Chapter 5. ADODB package" /><link rel="prev" href="ch05s02.html" title="files" /><link rel="next" href="ch05s04.html" title="Installation" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Usage</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><th width="60%" align="center">Chapter 5. ADODB package</th><td width="20%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr /></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id933749"></a>Usage</h2></div></div></div><p>This distribution consists of 3 main modules:</p><div class="orderedlist"><ol type="1"><li><p>an adodb-recordset to xmlrpc-value (and viceversa)
+            conversion module for adodb, forming the core of the
+            library</p></li><li><p>an xmlrpc web-service server that provides the functionality
+            of a SQL-to-HTTP proxy</p></li><li><p>an xmlrpc driver for ADODB that can be used to transparently
+            connect applications to remote databases using the xmlrpc
+            web-service server</p></li></ol></div><p>Module 1 can be used stand-alone in any application;
+      module 2 depends on module 1 and module 3 depends on both 1 and
+      2.</p><div><img src="../adodb/schema.gif" /></div><p>The above schema documents a typical usage scenario. We will refer
+      to that image throughout the rest of the documentation.</p><div class="itemizedlist"><ul type="disc"><li><p>part A is the database to be accessed by the client app. It
+            can be any database supported by adodb</p></li><li><p>part B is the PHP-powered web service that lets remote
+            clients access the database using xmlrpc function calls. It needs
+            a php-supporting web server to run</p></li><li><p>part C is the client application, and is the most varying of
+            the 3 parts:</p><div class="itemizedlist"><ul type="circle"><li><p>it can be written in PHP and make use of the adodb
+                  xmlrpc driver (module 3 above). The programmer only needs to
+                  know the adodb api.</p></li><li><p>it can be written in PHP and make direct use of xmlrpc
+                  calls. The programmer needs to know the phpxmlrpc api and
+                  decode 'by hand' the recordset received from the db</p></li><li><p>it can be written in any other language than PHP,
+                  making use of an appropriate xmlrpc library</p></li><li><p>it can be part of a website as well as a stand-alone
+                  application</p></li></ul></div></li></ul></div><p>Needless to say, all 3 parts can reside on the same as
+      well as on 3 completely separate physical servers (any combination is
+      allowed).</p><p>A few usage cases:</p><div class="itemizedlist"><ul type="disc"><li><p>A is SQLserver, B is IIS. They both reside on the same
+            Windows 200 server. C is a PHP application running in Apache on
+            Linux. Advantage: no need of ODBC drivers on the linux
+            server</p></li><li><p>A is Sybase, B is Apache. They both reside on the same
+            Solaris server. C is is a PHP application running as a service on
+            a SCO Unix. Advantage: no need for recent Sybase client libraries
+            when compiling PHP on SCO</p></li><li><p>A is Oracle, B is Netscape Fasttrack. They reside on
+            different servers in the intranet. C is a PHP application running
+            in Apache on a hardened Solaris in the DMZ. Advantage: instead of
+            giving direct access to the internal database through the firewall
+            separating the intranet and DMZ networks, only a (custom) port is
+            opened for HTTP request</p></li></ul></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch05s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">files </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Installation</td></tr></table></div></body></html>

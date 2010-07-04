@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>rationale</title><link rel="stylesheet" href="xmlrpc.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.74.3" /><link rel="home" href="index.html" title="EXTRAS packages for the PHP-XMLRPC library" /><link rel="up" href="ch10.html" title="Chapter 10. WSDL package" /><link rel="prev" href="ch10.html" title="Chapter 10. WSDL package" /><link rel="next" href="ch11.html" title="Chapter 11. XMLRPC extension API package" /></head><body><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">rationale</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch10.html">Prev</a> </td><th width="60%" align="center">Chapter 10. WSDL package</th><td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td></tr></table><hr /></div><div class="sect1" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id935026"></a>rationale</h2></div></div></div><p>The XMLRPC protocol has been specified a long time ago, at the
+      dawn of XML and is described only in natural language. Attempts have
+      been made to "reverse specify" it with DTD or XSD, with little success.
+      Both definition languages are in fact too limited in their capability of
+      expressing valid xml constructs to capture in a complete and correct
+      fashion the XMLRPC semantics (see
+      http://www.cafeconleche.org/books/xmljava/chapters/ch02s05.html for more
+      details. Suffice to say that XSD does not allow to specify two
+      consecutive xml elements with the same name but of different types, such
+      as the faultCode and faultReason response members happen to be).</p><p>The RELAX-NG definition language on the other hand has been found
+      capable enough to fully describe XMLRPC, and the schema that is part of
+      this distribution can be used to validate any XMLRPC request or response
+      conforming to the spec. IT IS NOT AUTHORITATIVE because the XMLRPC
+      specification is copyright by Dave Winer, and he seems to have lost
+      interest in any further development of the protocol, but it should be
+      considered accurate and production ready (if you find any bugs, please
+      let the authors know, using the <a class="ulink" href="???" target="_top">project's web
+      site</a>).</p><p>This situation is very unfortunate, since WSDL has emerged as a
+      widely accepted web services standard, and a plethora of tools exist to
+      parse existing WSDL files and automatically generate code stubs or
+      generate WSDL definitions from existing code. If a WSDL representation
+      of XMLRPC webservices could be generated, the net result would be
+      greatly inreased interoperability between SOAP clients and toolkits and
+      XMLRPC server implementations.</p><p>Even though the apparent goal of the WSDL language design was to
+      allow description of every possible message exchange, using every
+      conceivable xml serialization over any transport (and a lot of the
+      redundancy, verbosity and complication of the language are direct
+      consequence of the flexibility sought), existing implementations de
+      facto only support the SOAP binding for webservices, and XSD as language
+      definition schema. RELAX-NG, while nominally accepted, has yet to find
+      widespread usage in webservices toolkits. This leaves us with
+      almost-bot-not-quite interoperable solutions.</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch10.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 10. WSDL package </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> Chapter 11. XMLRPC extension API package</td></tr></table></div></body></html>

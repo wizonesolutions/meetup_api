@@ -1,0 +1,496 @@
+/**
+ * CSS stylesheet for HTML documentation of xmlrpc methods.
+ *   original style copied from XINS project (http://xins.sourceforge.net),
+ *   from Ernst de Haan and Chris Gilbride
+ *
+ * @version $Id: docxmlrpcs.css,v 1.3 2008/03/07 16:47:06 ggiunta Exp $
+ * @author Gaetano Giunta
+ * @copyright (c) 2005-2009 G. Giunta
+ * @license code licensed under the BSD License: http://phpxmlrpc.sourceforge.net/license.txt
+ **/
+
+body {
+	font-family: sans-serif;
+	color: #000000;
+	background-color: #ffffff;
+}
+
+h1 {
+	font-family: serif;
+	color: #000000;
+	font-size: 150%;
+	text-align: left;
+}
+
+h2 {
+	font-family: serif;
+	color: #000000;
+	font-size: 120%;
+	text-align: left;
+	border-width: 1pt 0pt 0pt 0pt;
+	border-style: solid;
+	border-color: #8888dd;
+}
+
+h3 {
+	font-family: serif;
+	font-size: 110%
+}
+
+table tr td {
+	vertical-align: top;
+}
+
+table tr th {
+	vertical-align: top;
+}
+
+table.headerlinks {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.headerlinks tr td {
+	padding: 2pt;
+	margin: 0pt;
+	font-variant: small-caps;
+	background-color: #ddddff;
+	border-width: 0pt 0pt 1pt 0pt;
+	border-style: solid;
+	border-color: #8888dd;
+}
+
+table.headerlinks tr td.prevnext {
+	text-align: right;
+}
+
+.footer {
+	margin-top: 16pt;
+	border-width: 1pt 0pt 0pt 0pt;
+	border-style: solid;
+	border-color: #8888dd;
+	font-size: 70%;
+	font-style: italic;
+	text-align: right;
+}
+
+table.metadata {
+	left: 0pt;
+	margin: 8pt 0pt 0pt 0pt;
+	border-collapse: collapse;
+}
+
+table.metadata tr td.key {
+	font-weight: bold;
+	padding: 0pt 4pt 0pt 0pt;
+}
+
+table.metadata tr td.value {
+	padding: 0pt;
+}
+
+table.parameters {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: fixed;
+	table-layout: auto;
+	width: 100%;
+}
+
+table.parameters tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+}
+
+table.parameters tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.parameters tr td.value {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.parameters tr td.name {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.parameters tr td.required {
+	/* font-variant: small-caps; */
+}
+
+table.inputparameters {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: auto;
+	width: 95%;
+}
+
+table.inputparameters tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+}
+
+table.inputparameters tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.inputparameters tr td.value {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.inputparameters tr td.name {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.inputparameters tr td.required {
+	/* font-variant: small-caps; */
+}
+
+table.outputparameters {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: auto;
+	width: 95%;
+}
+
+table.outputparameters tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+}
+
+table.outputparameters tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.outputparameters tr td.value {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.outputparameters tr td.name {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.outputparameters tr td.required {
+	/* font-variant: small-caps; */
+}
+
+table.resultcodes {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: auto;
+	width: 95%;
+}
+
+table.resultcodes tr th {
+	color: #ffffff;
+	background-color: #7777dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+}
+
+table.resultcodes tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.resultcodes tr td.value {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.resultcodes tr.default td.value {
+	font-style: italic;
+}
+
+table.resultcodes tr td.name {
+	font-family: monospace;
+	font-size: 90%;
+}
+
+table.resultcodes tr td.required {
+	/* font-variant: small-caps; */
+}
+
+table.element_details {
+	width: 100%;
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: auto;
+	width: 95%;
+}
+
+table.element_details tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+	text-align: left;
+	width: 160px;
+}
+
+table.element_details tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.example {
+	border: none;
+	border-collapse: collapse;
+	table-layout: auto;
+	width: 95%;
+}
+
+table.example tr th {
+	background-color: #ddddff;
+	text-align: left;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.example tr td {
+	background-color: #ddddff;
+	text-align: left;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.example tr td.header {
+	text-align: left;
+	border: none;
+	padding: 2pt;
+	background-color: #ffffff;
+}
+
+.xml {
+    font-family: monospace;
+    font-size: 90%;
+	white-space: pre;
+}
+
+.xml .decl {
+	font-weight: bold;
+	color: #008800;
+}
+
+.xml .decl .elem .name {
+	font-weight: bold;
+	color: #008800;
+}
+
+.xml .elem .name {
+	font-weight: bold;
+	color: #000088;
+}
+
+.xml .pcdata {
+	font-style: italic;
+}
+
+.xml .elem .attr .name {
+	font-weight: normal;
+	color: #000088;
+}
+
+.url {
+    font-family: monospace;
+    font-size: 90%;
+	white-space: pre;
+}
+
+.url .functionparam .name {
+	color: #880000;
+	font-weight: bold
+}
+
+.url .functionparam .value {
+	color: #880000;
+	font-weight: bold
+}
+
+.url .param .name {
+	color: #000088;
+	font-weight: bold
+}
+
+.url .param .value {
+	color: #008800;
+	font-weight: bold
+}
+
+blockquote {
+	margin-top: 10pt;
+	margin-bottom: 10pt;
+}
+
+pre {
+    font-family: monospace;
+    font-size: 90%;
+}
+
+a:hover {
+	background-color: #ddddff;
+	text-decoration: underline;
+}
+
+a {
+	color: #0000bb;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #0000bb;
+	text-decoration: none;
+}
+
+a img {
+	border-style: none;
+}
+
+.disabled {
+	color: #888888;
+}
+
+.active {
+	color: #888888;
+	font-weight: bold;
+}
+
+table.apilist {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: fixed;
+	table-layout: auto;
+	width: 100%;
+}
+
+table.apilist tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+	text-align: left;
+}
+
+table.apilist tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.functionlist {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: fixed;
+	table-layout: auto;
+	width: 100%;
+}
+
+table.functionlist tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+	text-align: left;
+}
+
+table.functionlist tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+table.typelist {
+	border: none;
+	background-color: #ddddff;
+	border-collapse: collapse;
+	table-layout: fixed;
+	table-layout: auto;
+	width: 100%;
+}
+
+table.typelist tr th {
+	color: #ffffff;
+	background-color: #8888dd;
+	border: solid 1px #8888dd;
+	padding: 2pt;
+	font-weight: bold;
+	text-align: left;
+}
+
+table.typelist tr td {
+	border: solid 1px #8888dd;
+	padding: 2pt;
+}
+
+input {
+	border: 1px #8888dd solid;
+	font-family: sans-serif;
+	font-size: 9pt;
+	background-color: #ffffff;
+}
+
+input.required {
+	border: 2px #8888dd solid;
+}
+
+input[name='submit'] {
+	margin-top: 5px;
+	text-align: center;
+	font-weight: bold;
+	cursor: hand;
+	background-color: #eeeeff;
+}
+
+select {
+	border: 1px #8888dd solid;
+	font-family: sans-serif;
+	font-size: 9pt;
+	background-color: #ffffff;
+}
+
+select.required {
+	border: 2px #8888dd solid;
+}
+
+td.status {
+	font-variant: small-caps;
+}
+
+.broken_freeze {
+	color: #ff4444;
+	font-weight: bold;
+}
+
+div.broken_freeze {
+	border: dashed 1px #ff4444;
+	margin-top: 1em;
+	margin-bottom: 1.5em;
+	padding: 1em;
+}
