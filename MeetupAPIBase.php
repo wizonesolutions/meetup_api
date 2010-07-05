@@ -19,7 +19,6 @@ require_once(dirname(__FILE__) . '/config.php');
 class MeetupAPIBase {
   protected $validFormats = array('json',
       'json-alt',
-      'xml',
       );
   protected $apiKey, $apiUrl, $format, $method, $pageSize, $numPages, $sortDesc, $query, $curl; //This should be set to the Meetup API method implemented by the child class.
 
@@ -70,28 +69,74 @@ class MeetupAPIBase {
     else return TRUE;
   }
 
-  function getResults($offset = 0, $responseData = NULL) {
+  function getResponse($offset = 0, $responseData = NULL) {
     if (!$this->validateFormat()) return FALSE;
     if (!isset($responseData)) {
       $responseData = $this->request($offset);
     }
-    if ($results = $this->parseResponse($responseData)) {
-      // @todo CRIT: Implement paging here.
-
-      return $results;
+    if ($pageResponse = $response = $this->parseResponse($responseData)) {
+      $pagesRead = 1;
+      $currOffset = $offset;
+      //The Meetup API gives us a handy, dandy next link! Let's use that! I feel like I'm using linked lists again!
+      $done = FALSE;
+      while ($done != TRUE) {
+        $nextRequestUrl = $this->getNextRequestUrl($pageResponse);
+        //Are we out of stuff we need to fetch?
+        if ( ($pagesRead == $this->numPages) || empty($nextRequestUrl) || ($this->pageSize * ($currOffset + 1)) > $this->getMeta($pageResponse, 'total_count') )  {
+          $done = TRUE;
+          continue;
+        }
+        else {
+          //Keep going
+          $pageResponseData = $this->request(0, $nextRequestUrl); //Wonder if I'll ever actually use the "offset" feature of MeetupAPIBase::request...?
+          //Overwrite the metadata and merge the results
+          if (!$pageResponse = $this->parseResponse($pageResponseData)) {
+            break; //Exit cleanly (I hope) if an unexpected problem occurs
+          }
+          $response->meta = $pageResponse->meta;
+          $response->results = array_merge($response->results, $pageResponse->results);
+          $pagesRead++;
+          $currOffset++;
+        }
+      }
+      return $response;
     }
     else return FALSE;
   }
 
-  function getRawResults($offset = 0) {
+  function getRawResponse($offset = 0) {
     if (!$this->validateFormat()) return FALSE;
     return $this->request($offset);
   }
+
+  protected function getMeta($response, $field) {
+    switch($this->format) {
+      case 'json':
+      case 'json-alt':
+        return $response->meta->$field;
+        break;
+      default:
+        return FALSE;
+        break;
+    }
+  }
+
+  protected function getPagingRequest($response, $direction = 'next') {
+    return $this->getMeta($response, $direction);
+  }
+
+  protected function getNextRequestUrl($response) {
+    return $this->getPagingRequest($response);
+  }
   
+  protected function getPrevRequestUrl($response) {
+    return $this->getPagingRequest($response, 'prev');
+  }
+
   function parseResponse($responseData) {
     switch($this->format) {
       case 'json':
-        //TODO: This json_decode has a BIG limitation, but it is built into PHP and is thus preferred. However, I wouldn't mind offering a backup decoding function. Gotta save on that paging activity.
+        //This json_decode has BIG limitations in PHP 5.2, but it is built into PHP and is thus preferred if a decent one is available. json-alt is chosen if the PHP version isn't at least 5.3.
         $jsonResponse = json_decode($responseData);
         return $jsonResponse;
         break;
@@ -99,11 +144,13 @@ class MeetupAPIBase {
         require_once(dirname(__FILE__) . '/libraries/xmlrpc/lib/xmlrpc.inc');
         require_once(dirname(__FILE__) . '/libraries/xmlrpc/extras/jsonrpc/jsonrpc.inc');
         require_once(dirname(__FILE__) . '/libraries/xmlrpc/extras/jsonrpc/json_extension_api.inc');
-        $decodeFunc = 'json_decode';
-        if (extension_loaded('json')) {
-          $decodeFunc = 'json_alt_decode';
+        $jp = 'json_';
+        if (in_array('json', get_loaded_extensions())) {
+          $jp = 'json_alt_';
         }
-        $jsonResponse = $decodeFunc($responseData, FALSE, 1);
+        $jsonDecode = $jp . 'decode';
+        $jsonLastError = $jp . 'last_error'; //TODO: Actually handle this
+        $jsonResponse = $jsonDecode($responseData, FALSE, 1);
         return $jsonResponse;
         break;
       case 'xml':
@@ -121,7 +168,7 @@ class MeetupAPIBase {
     }
   }
 
-  /* @todo: Taking this XML at face value is a bad idea. It would be better to hard-map the tags and data hierarchy to expect, a bit like I do in Easy Populate Converter. Then I can traverse it without recursion and get around the hideous question of, "How do I tell if a child has children itself, and if those are part of a list of itself or simply child properties?" Granted, there are few child properties that actually themselves contain multiple results. In fact, I can only think of topics. So accomodating all children isn't really needed. I can abstract this a bit and make life easier. I can refactor it later.
+  /* @todo LOW: Taking this XML at face value is a bad idea. It would be better to hard-map the tags and data hierarchy to expect, a bit like I do in Easy Populate Converter. Then I can traverse it without recursion and get around the hideous question of, "How do I tell if a child has children itself, and if those are part of a list of itself or simply child properties?" Granted, there are few child properties that actually themselves contain multiple results. In fact, I can only think of topics. So accomodating all children isn't really needed. I can abstract this a bit and make life easier. I can refactor it later.
 
   THEREFORE, this XML parsing is probably not something that MeetupAPIBase should be doing at all. It might work, though...need to play with it a bit more.
 
@@ -172,15 +219,17 @@ class MeetupAPIBase {
    * Wrapper function to initiate the HTTP request.
    * @return void
    */
-  protected function initRequest($offset = 0) {
-    //URL-encode the query
-    $request_settings = array('key' => $this->apiKey,
-        'page' => $this->pageSize,
-        'offset' => $offset,
-        'desc' => $this->sortDesc,
-        );
-    $request = http_build_query(array_merge($this->query, $request_settings));
-    $this->curl = curl_init($this->getRequestUrl() . '?' . $request);
+  protected function initRequest($offset = 0, $request = NULL) {
+    if (!isset($request)) {
+      //URL-encode the query
+      $request_settings = array('key' => $this->apiKey,
+          'page' => $this->pageSize,
+          'offset' => $offset,
+          'desc' => $this->sortDesc,
+          );
+      $request = $this->getRequestUrl() . '?' . http_build_query(array_merge($this->query, $request_settings));
+    }
+    $this->curl = curl_init($request);
     curl_setopt($this->curl, CURLOPT_HEADER, FALSE);
     curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, TRUE);
   }
@@ -204,8 +253,8 @@ class MeetupAPIBase {
     curl_close($this->curl);
   }
 
-  protected function request($offset = 0) {
-    $this->initRequest($offset);
+  protected function request($offset = 0, $request = NULL) {
+    $this->initRequest($offset, $request);
     $responseData = $this->execRequest();
     $this->closeRequest();
     return $responseData;
@@ -257,15 +306,17 @@ class MeetupAPIBase {
 
 // @todo CRIT: REMOVE THIS TESTING CODE.
 require_once(dirname(__FILE__) . '/tester/krumo/class.krumo.php');
-$test_key = '336b4270111f5f4ba65156511d1a3d';
-$muApi = new MeetupAPIBase($test_key, 'groups');
-$muApi->setQuery( array('zip' => '11211',
-      'order' => 'ctime',) );
-$muApi->setSortDesc(TRUE);
-$results = $muApi->getResults(0);
-krumo($results);
-//krumo($results);
-// @todo MEDIUM: Do something with this to provide error messages
+//$test_key = '336b4270111f5f4ba65156511d1a3d'; //Work
+$test_key = '5b3545260134293376757d53337a60'; //Personal
+$muApi = new MeetupAPIBase($test_key, 'members');
+$muApi->setQuery( array('group_urlname' => 'gnostic-movement-montreal',) );
+set_time_limit(0);
+$muApi->setPageSize(15);
+$muApi->setNumPages(0);
+$response = $muApi->getResponse();
+krumo($response);
+
+// @todo MEDIUM: Do something with this to provide error messages, at least for JSON
 /* switch(json_alt_last_error()) {
   case JSON_ALT_ERROR_DEPTH:
     echo ' - Maximum stack depth exceeded';
