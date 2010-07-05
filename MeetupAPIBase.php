@@ -260,14 +260,12 @@ $test_key = '336b4270111f5f4ba65156511d1a3d';
 $muApi = new MeetupAPIBase($test_key, 'groups');
 $muApi->setQuery( array('zip' => '11211',
       'order' => 'ctime',) );
-//$muApi->setPageSize(5);
-$muApi->setPageSize(68);
 $muApi->setSortDesc(TRUE);
-//$results = $muApi->getRawResults(12);
-$results = $muApi->getRawResults(0);
-krumo($muApi->getResults(0, $results));
+$results = $muApi->getResults(0);
 krumo($results);
-switch(json_alt_last_error()) {
+//krumo($results);
+// @todo MEDIUM: Do something with this to provide error messages
+/* switch(json_alt_last_error()) {
   case JSON_ALT_ERROR_DEPTH:
     echo ' - Maximum stack depth exceeded';
     break;
@@ -279,7 +277,5 @@ switch(json_alt_last_error()) {
     break;
   case JSON_ALT_ERROR_NONE:
     echo ' - No errors';
-}
-//$muApi->setPageSize(65);
-//krumo($muApi->getRawResults());
+} */
 

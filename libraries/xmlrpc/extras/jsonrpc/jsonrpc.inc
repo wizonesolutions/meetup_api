@@ -245,19 +245,21 @@
 	* @bug parsing of "{true:1}" works here, but not in ie/ff
 	* @bug parsing of "{a b:1}" works here, but not in ie/ff
 	*/
-	function json_parse($data, $return_phpvals=false, $src_encoding='UTF-8', $dest_encoding='ISO-8859-1')
+	function json_parse($data, $return_phpvals=false, $src_encoding='UTF-8', $dest_encoding='ISO-8859-1', $options = array())
 	{
 		// optimization creep: this is quite costly. Is there any better way to achieve it?
 		// also note that json does not really allow comments...
-		$data = preg_replace(array(
-			// eliminate single line comments in '// ...' form
-			// REMOVED BECAUSE OF BUGS: 1-does not match at end of non-empty line, 2-eats inside strings, too
-			//'#^\s*//(.*)$#m',
-			// eliminate multi-line comments in '/* ... */' form, at start of string
-			'#^\s*/\*(.*)\*/#Us',
-			// eliminate multi-line comments in '/* ... */' form, at end of string
-			'#/\*(.*)\*/\s*$#Us'
-		), '', $data);
+    if ($options['truncate_comments_buggy'] === TRUE) {
+      $data = preg_replace(array(
+        // eliminate single line comments in '// ...' form
+        // REMOVED BECAUSE OF BUGS: 1-does not match at end of non-empty line, 2-eats inside strings, too
+        //'#^\s*//(.*)$#m',
+        // eliminate multi-line comments in '/* ... */' form, at start of string
+        '#^\s*/\*(.*)\*/#Us',
+        // eliminate multi-line comments in '/* ... */' form, at end of string
+        '#/\*(.*)\*/\s*$#Us'
+      ), '', $data);
+    }
 
 		$data = trim($data); // remove excess whitespace
 
@@ -1306,7 +1308,7 @@
 
 		//$GLOBALS['_xh'] = array();
 		$GLOBALS['_xh']['isf'] = 0;
-		if (!json_parse($json_val, false, $src_encoding, $dest_encoding))
+		if (!json_parse($json_val, false, $src_encoding, $dest_encoding, $options))
 		{
 			error_log($GLOBALS['_xh']['isf_reason']);
 			return false;
