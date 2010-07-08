@@ -5,12 +5,10 @@
  * This file contains methods common to all client classes and serves as the base class, providing properties that child classes should override.
  */
 
-require_once(dirname(__FILE__) . '/config.php');
-
 /**
  * MeetupAPIBase 
  * This class contains the essential functionality to make building out the API functionality easier. It can also be implemented itself. In this case, it needs to be supplied the method for the API request.
- * @package MeetupAPIBase
+ * @package MeetupAPI
  * @version $id$
  * @copyright 2010 WizOne Solutions
  * @author Kevin Kaland <help [at] wizonesolutions [dot] com> 
@@ -23,6 +21,8 @@ class MeetupAPIBase {
   protected $apiKey, $apiUrl, $format, $method, $pageSize, $numPages, $sortDesc, $query, $curl; //This should be set to the Meetup API method implemented by the child class.
 
   function __construct($apiKey, $method) {
+    require_once(dirname(__FILE__) . '/config.php');
+
     $this->apiKey = $apiKey;
     $this->method = $method;
     $this->apiUrl = API_URL;
@@ -151,6 +151,20 @@ class MeetupAPIBase {
         $jsonDecode = $jp . 'decode';
         $jsonLastError = $jp . 'last_error'; //TODO: Actually handle this
         $jsonResponse = $jsonDecode($responseData, FALSE, 1);
+        // @todo MEDIUM: Do something with this to provide error messages, at least for JSON
+        /* switch(json_alt_last_error()) {
+         case JSON_ALT_ERROR_DEPTH:
+           echo ' - Maximum stack depth exceeded';
+         break;
+         case JSON_ALT_ERROR_CTRL_CHAR:
+           echo ' - Unexpected control character found';
+         break;
+         case JSON_ALT_ERROR_SYNTAX:
+           echo ' - Syntax error, malformed JSON';
+         break;
+         case JSON_ALT_ERROR_NONE:
+           echo ' - No errors';
+         } */
         return $jsonResponse;
         break;
       case 'xml':
@@ -304,30 +318,13 @@ class MeetupAPIBase {
   }
 }
 
-// @todo CRIT: REMOVE THIS TESTING CODE.
+/* // @todo CRIT: REMOVE THIS TESTING CODE.
 require_once(dirname(__FILE__) . '/tester/krumo/class.krumo.php');
-//$test_key = '336b4270111f5f4ba65156511d1a3d'; //Work
-$test_key = '5b3545260134293376757d53337a60'; //Personal
 $muApi = new MeetupAPIBase($test_key, 'members');
 $muApi->setQuery( array('group_urlname' => 'gnostic-movement-montreal',) );
 set_time_limit(0);
 $muApi->setPageSize(15);
 $muApi->setNumPages(0);
 $response = $muApi->getResponse();
-krumo($response);
-
-// @todo MEDIUM: Do something with this to provide error messages, at least for JSON
-/* switch(json_alt_last_error()) {
-  case JSON_ALT_ERROR_DEPTH:
-    echo ' - Maximum stack depth exceeded';
-    break;
-  case JSON_ALT_ERROR_CTRL_CHAR:
-    echo ' - Unexpected control character found';
-    break;
-  case JSON_ALT_ERROR_SYNTAX:
-    echo ' - Syntax error, malformed JSON';
-    break;
-  case JSON_ALT_ERROR_NONE:
-    echo ' - No errors';
-} */
+krumo($response); */
 
