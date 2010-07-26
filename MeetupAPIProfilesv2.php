@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/MeetupAPIBase.php');
 
 /**
- * MeetupAPIMembers 
+ * MeetupAPIProfilesv2 
  * 
  * @package MeetupAPI
  * @version $id$
@@ -11,9 +11,9 @@ require_once(dirname(__FILE__) . '/MeetupAPIBase.php');
  * @license GNU Public License Version 2.0
  */
 
-class MeetupAPIMembers extends MeetupAPIBase {
+class MeetupAPIProfilesv2 extends MeetupAPIBase {
   function __construct($apiKey) {
-    $this->method = 'members';
+    $this->method = '2/profiles';
     parent::__construct($apiKey, $this->method);
   }
 }

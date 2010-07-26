@@ -318,13 +318,3 @@ class MeetupAPIBase {
   }
 }
 
-/* // @todo CRIT: REMOVE THIS TESTING CODE.
-require_once(dirname(__FILE__) . '/tester/krumo/class.krumo.php');
-$muApi = new MeetupAPIBase($test_key, 'members');
-$muApi->setQuery( array('group_urlname' => 'gnostic-movement-montreal',) );
-set_time_limit(0);
-$muApi->setPageSize(15);
-$muApi->setNumPages(0);
-$response = $muApi->getResponse();
-krumo($response); */
-
