@@ -18,14 +18,3 @@ class MeetupAPIComments extends MeetupAPIBase {
   }
 }
 
-// @todo CRIT: REMOVE THIS TESTING CODE.
-require_once(dirname(__FILE__) . '/tester/krumo/class.krumo.php');
-//$test_key = '336b4270111f5f4ba65156511d1a3d'; //Work
-$test_key = '5b3545260134293376757d53337a60'; //Personal
-$muApi = new MeetupAPIComments($test_key);
-$muApi->setQuery( array('group_urlname' => 'The-Gnostic-Movement-Los-Angeles',) );
-set_time_limit(0);
-$muApi->setPageSize(200);
-$response = $muApi->getResponse();
-krumo($response);
-
