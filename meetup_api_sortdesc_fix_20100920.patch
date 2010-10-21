@@ -1,0 +1,31 @@
+diff --git MeetupAPIBase.php MeetupAPIBase.php
+index 7fed5eb..1915f4f 100644
+--- MeetupAPIBase.php
++++ MeetupAPIBase.php
+@@ -237,10 +237,11 @@ class MeetupAPIBase {
+     if (!isset($request)) {
+       //URL-encode the query
+       $request_settings = array('key' => $this->apiKey,
+-          'page' => $this->pageSize,
+-          'offset' => $offset,
+-          'desc' => $this->sortDesc,
+-          );
++        'page' => $this->pageSize,
++        'offset' => $offset,
++        'desc' => $this->sortDesc,
++      );
++      if ($this->sortDesc == NULL) unset($request_settings['desc']); // Don't put desc in the query string at all if it isn't being used; its very presence sorts results descending!
+       $request = $this->getRequestUrl() . '?' . http_build_query(array_merge($this->query, $request_settings));
+     }
+     $this->curl = curl_init($request);
+@@ -309,8 +310,8 @@ class MeetupAPIBase {
+   }
+ 
+   function setSortDesc($sortDesc) {
+-    if ($sortDesc == TRUE) $this->sortDesc = $sortDesc;
+-    else return FALSE;
++    if ($sortDesc == TRUE) $this->sortDesc = 'true';
++    else $this->sortDesc = NULL;
+   }
+ 
+   function getSortDesc() {
