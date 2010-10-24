@@ -1,0 +1,13 @@
+diff --git MeetupAPIBase.php MeetupAPIBase.php
+index 1915f4f..3f040b2 100644
+--- MeetupAPIBase.php
++++ MeetupAPIBase.php
+@@ -294,7 +294,7 @@ class MeetupAPIBase {
+   }
+ 
+   function setPageSize($pageSize) {
+-    if ((int) $pageSize > 0) $this->pageSize = $pageSize;
++    if ((int) $pageSize > -1) $this->pageSize = (int) $pageSize;
+   }
+ 
+   function getPageSize() {

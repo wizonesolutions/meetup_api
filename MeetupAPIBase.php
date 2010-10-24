@@ -294,7 +294,7 @@ class MeetupAPIBase {
   }
 
   function setPageSize($pageSize) {
-    if ((int) $pageSize > 0) $this->pageSize = $pageSize;
+    if ((int) $pageSize > -1) $this->pageSize = (int) $pageSize;
   }
 
   function getPageSize() {
