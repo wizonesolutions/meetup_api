@@ -255,7 +255,8 @@ class MeetupAPIBase {
    * @return stdClass
    */
   protected function execRequest() {
-    $responseData = curl_exec($this->curl);
+    // json_decode cannot handle very large numbers. So the UTC time is shortened. 
+    $responseData = preg_replace("/(\d{10})000,/",'$1,',curl_exec($this->curl));
     return $responseData;
   }
 
