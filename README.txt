@@ -1,8 +1,8 @@
-Last updated 25 July 2010 by Kevin Kaland <help [at] wizonesolutions [dot] com>
+Last updated 7 June 2011 by Mike Accardo <accardo [at] cpan [dot] org>
 
 === Introduction to using the Meetup API ===
 
-Here's an example of making a call to Comments. This file was funnier the first time I wrote it, but I lost it :(
+Here's an example of making a call to Comments.
 
   <?php
     $test_key = 'yourkeyhere'; //Replace with your key
@@ -12,6 +12,28 @@ Here's an example of making a call to Comments. This file was funnier the first 
     $muApi->setPageSize(200);
     $response = $muApi->getResponse();
     krumo($response);
+  ?>
+
+=== Example of dealing with UTC time ===
+
+Here's an example of converting the UTC time field. 
+
+In some API methods, like open events, the response returns a time and offset. The time is UTC time in milliseconds since the epoch, and the offset is the local offset from UTC time in milliseconds. 
+
+In the MeetupAPIBase class, the UTC time is automatically divided by 1000. So in the example, we only have to divide the offset by 1000 to complete the conversion.    
+
+  <?php
+
+    date_default_timezone_set('UTC');
+
+    // Get the response after making a request as shown in the first example
+    $response = $muApi->getResponse();
+    foreach($response->{"results"} as $event)
+    {  
+        $time = $event->{'time'};
+	$offset = $event->{'utc_offset'}/1000;
+	$time = date('Y-m-d H:i:s',$time + $offset);
+    }
   ?>
 
 === Using unimplemented methods ===
